@@ -7,11 +7,22 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  Pressable,
+  Linking,
 } from "react-native";
+
+const imageProfile = 'https://avatars.githubusercontent.com/u/46698426?v=4';
+const urlGitHub = 'https://github.com/Davi-Mota-Nogueira';
 
 const App = ()=> {
   const [toggle, setToggle] = useState(false);
   const handleToggle = () => setToggle(oldToggle => !oldToggle);
+  const handlePressGoToGithub = async () => {
+    const res = await Linking.canOpenURL(urlGitHub);
+    if (res) {
+      await Linking.openURL(urlGitHub);
+    }
+  };
 
   useEffect(()=> {
     /***
@@ -39,6 +50,13 @@ const App = ()=> {
           style={toggle?style.lightOn:style.lightOff}
           source={toggle?require('./assets/icons/eco-light.png'):require('./assets/icons/eco-light-off.png')}
           />
+          <Pressable onPress={handlePressGoToGithub}>
+            <Image
+              accessibilityLabel="Davi no quarto com cabelos soltos."
+              style={style.avatar}
+              source={{uri: imageProfile}}
+            />
+          </Pressable>
         </View>
       </TouchableOpacity>
     </SafeAreaView>
@@ -54,6 +72,7 @@ const style = StyleSheet.create({
     backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
   },
   containerLight:{
     flex: 1,
@@ -73,5 +92,12 @@ const style = StyleSheet.create({
     alignSelf: 'center',
     resizeMode: 'contain',
     tintColor: 'white',
+  },
+  avatar: {
+    height: 200,
+    width: 200,
+    borderRadius: 100,
+    borderColor: 'white',
+    borderWidth: 2,
   },
 });
